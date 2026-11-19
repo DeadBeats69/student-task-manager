@@ -1,0 +1,165 @@
+/* ===== SIDEBAR ===== */
+.sidebar {
+    width: 260px;
+    min-height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    overflow-y: auto;
+}
+
+.sidebar .nav-link {
+    border-radius: 8px;
+    margin-bottom: 4px;
+    padding: 10px 15px;
+    transition: background-color 0.2s;
+}
+
+.sidebar .nav-link:hover,
+.sidebar .nav-link.active {
+    background-color: rgba(255, 255, 255, 0.15);
+}
+
+/* ===== MAIN CONTENT ===== */
+.main-content {
+    flex: 1;
+    padding: 30px;
+    min-height: 100vh;
+    background-color: #f8f9fa;
+}
+
+@media (min-width: 992px) {
+    .main-content {
+        margin-left: 260px;
+    }
+}
+
+@media (max-width: 991.98px) {
+    .main-content {
+        padding-top: 70px;
+    }
+}
+
+/* ===== DASHBOARD CARDS ===== */
+.dashboard-card {
+    border: none;
+    border-radius: 12px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.dashboard-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+}
+
+.dashboard-card .card-body {
+    padding: 20px;
+}
+
+.dashboard-card .card-icon {
+    font-size: 2.5rem;
+    opacity: 0.8;
+}
+
+.dashboard-card .card-value {
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+/* ===== TABLE ===== */
+.table th {
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.table td {
+    vertical-align: middle;
+}
+
+/* ===== BADGE ===== */
+.badge {
+    font-weight: 500;
+    padding: 6px 12px;
+}
+
+/* ===== FORMS ===== */
+.form-label {
+    font-weight: 500;
+}
+
+/* ===== PAGE HEADER ===== */
+.page-header {
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #e9ecef;
+}
+
+.page-header h2 {
+    font-weight: 700;
+    color: #333;
+}
+
+/* ===== EMPTY STATE ===== */
+.empty-state {
+    text-align: center;
+    padding: 50px 20px;
+    color: #6c757d;
+}
+
+.empty-state i {
+    font-size: 4rem;
+    margin-bottom: 15px;
+    opacity: 0.5;
+}
+
+/* ===== FILTER BAR ===== */
+.filter-bar {
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* ===== ACTION BUTTONS ===== */
+.btn-action {
+    padding: 4px 10px;
+    font-size: 0.85rem;
+}
+
+/* ===== DEADLINE STYLING ===== */
+.deadline-passed {
+    color: #dc3545;
+    font-weight: 600;
+}
+
+.deadline-soon {
+    color: #fd7e14;
+    font-weight: 600;
+}
+
+.deadline-ok {
+    color: #198754;
+}
+
+/* ===== CLICKABLE TASK ROW ===== */
+.clickable-task-row {
+    cursor: pointer;
+    transition: background-color 0.15s ease-in-out;
+}
+
+.clickable-task-row:hover {
+    background-color: rgba(13, 110, 253, 0.05) !important;
+}
+
+.task-clickable-title {
+    cursor: pointer;
+    transition: color 0.15s ease, text-decoration 0.15s ease;
+}
+
+.task-clickable-title:hover {
+    color: #0a58ca !important;
+    text-decoration: underline;
+}
+
