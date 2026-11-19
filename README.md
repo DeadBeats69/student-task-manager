@@ -22,6 +22,7 @@ Aplikasi web personal untuk membantu mahasiswa mencatat, mengelola, dan memantau
    - Ringkasan total seluruh tugas.
    - Jumlah tugas per status (`Belum Dikerjakan`, `Sedang Dikerjakan`, `Selesai`).
    - Tabel tugas dengan deadline terdekat dan indikator visual status tenggat waktu.
+   - **Modal Detail Tugas:** Klik baris tugas atau judul tugas untuk melihat detail lengkap secara langsung.
 
 2. **Manajemen Mata Kuliah (CRUD):**
    - Melihat daftar seluruh mata kuliah.
@@ -32,8 +33,9 @@ Aplikasi web personal untuk membantu mahasiswa mencatat, mengelola, dan memantau
 3. **Manajemen Tugas (CRUD):**
    - Melihat daftar tugas lengkap dengan nama mata kuliah (SQL `JOIN`).
    - Menambahkan tugas dengan memilih mata kuliah dari dropdown relasional.
+   - **Modal Detail Tugas (View Only):** Klik baris tugas, judul tugas, atau tombol aksi ikon mata (<i class="bi bi-eye"></i>) untuk melihat rincian tugas (judul, mata kuliah & dosen, deskripsi lengkap, deadline, status, dan waktu pembuatan).
    - Mengedit data tugas dan memperbarui status pengerjaan.
-   - Menghapus tugas dengan modal konfirmasi.
+   - Menghapus tugas dengan modal konfirmasi aman.
 
 4. **Pencarian dan Filter:**
    - Pencarian real-time berdasarkan judul tugas.
@@ -89,18 +91,19 @@ student-task-manager/
 │   ├── css/
 │   │   └── style.css            # Custom CSS styling & responsive adjustments
 │   ├── js/
-│   │   └── script.js            # JavaScript konfirmasi modal & interaksi
+│   │   └── script.js            # JavaScript konfirmasi modal, detail view, & interaksi
 │   └── img/                     # Aset gambar pendukung (opsional)
 │
 ├── config/
 │   └── database.php             # Koneksi PDO, helper CSRF, Flash, dan utilitas
 │
 ├── includes/
-│   ├── header.php               # Header HTML & link stylesheet Bootstrap
+│   ├── header.php               # Header HTML & link stylesheet Bootstrap 5
 │   ├── sidebar.php              # Navigasi sidebar desktop
 │   ├── navbar.php               # Top navbar & offcanvas menu mobile
 │   ├── footer.php               # Footer HTML & script Bootstrap JS
-│   └── flash.php                # Penampil alert flash messages
+│   ├── flash.php                # Penampil alert flash messages
+│   └── task_modal.php           # Helper modal detail tugas (View Only)
 │
 ├── courses/
 │   ├── index.php                # Halaman daftar mata kuliah
@@ -111,7 +114,7 @@ student-task-manager/
 │   └── delete.php               # Pemroses POST hapus mata kuliah
 │
 ├── tasks/
-│   ├── index.php                # Halaman daftar tugas (dengan Search & Filter)
+│   ├── index.php                # Halaman daftar tugas (dengan Search, Filter, & Detail)
 │   ├── create.php               # Form tambah tugas
 │   ├── store.php                # Pemroses POST tambah tugas
 │   ├── edit.php                 # Form edit tugas
@@ -121,38 +124,109 @@ student-task-manager/
 ├── database/
 │   └── student_task_manager.sql # Skrip DDL & DML database + dummy data
 │
+├── .gitignore                   # Konfigurasi ignore file Git
 ├── index.php                    # Halaman utama (Dashboard ringkasan statistik)
-└── README.md                    # Dokumentasi proyek
+└── README.md                    # Panduan & dokumentasi lengkap proyek
 ```
 
 ---
 
-## ⚙️ Panduan Instalasi dan Penggunaan
+## ⚙️ Panduan Lengkap Menjalankan Aplikasi
 
-### 1. Prasyarat
-- XAMPP (Apache & MySQL aktif)
-- PHP 8.x atau versi yang mendukung PDO
-- Browser web modern (Google Chrome, Mozilla Firefox, Microsoft Edge)
+Ikuti langkah-langkah di bawah ini untuk menjalankan aplikasi di komputer lokal menggunakan **XAMPP**:
 
-### 2. Penempatan Berkas
-Pastikan folder `student-task-manager` diletakkan di direktori `htdocs` XAMPP Anda:
+### 1. Prasyarat Sistem
+Pastikan perangkat Anda sudah terinstal:
+- **XAMPP** (sudah mencakup Apache Web Server & MariaDB/MySQL).
+- **PHP versi 8.0** atau yang lebih baru (dilengkapi ekstensi `pdo_mysql`).
+- **Web Browser** (Google Chrome, Firefox, Edge, Brave, dll.).
+- **Git** (opsional, jika ingin meng-clone repositori).
+
+---
+
+### 2. Penempatan Folder Proyek
+
+Pastikan folder proyek berada di dalam folder `htdocs` dari instalasi XAMPP Anda.
+
+#### Opsi A: Menggunakan Git Clone
+Buka terminal/PowerShell, arahkan ke folder `htdocs`, lalu jalankan:
+```bash
+cd C:\xampp\htdocs
+git clone https://github.com/DeadBeats69/student-task-manager.git
 ```
-C:\xampp\htdocs\student-task-manager\
-```
 
-### 3. Konfigurasi Database
-1. Buka browser dan akses phpMyAdmin: `http://localhost/phpmyadmin`
-2. Buat database baru bernama `student_task_manager` (atau `task_manager_db`).
-3. Pilih database tersebut, buka tab **Import**, lalu pilih file `database/student_task_manager.sql`.
-4. Klik **Go / Impor** untuk mengeksekusi pembuatan tabel dan pengisian dummy data.
+#### Opsi B: Mengunduh ZIP
+1. Download file ZIP repositori dan ekstrak.
+2. Pindahkan folder hasil ekstrak ke:
+   ```text
+   C:\xampp\htdocs\student-task-manager\
+   ```
 
-*(Catatan: File `config/database.php` telah dirancang cerdas untuk otomatis mendeteksi apakah nama database Anda `student_task_manager` atau `task_manager_db`).*
+> **Penting:** Pastikan nama foldernya adalah `student-task-manager` agar rute asset dan tautan navigasi berfungsi dengan benar.
 
-### 4. Menjalankan Aplikasi
-Buka peramban (browser) dan ketik alamat:
-```
-http://localhost/student-task-manager/
-```
+---
+
+### 3. Menjalankan Server XAMPP
+1. Buka aplikasi **XAMPP Control Panel**.
+2. Klik tombol **Start** pada modul **Apache**.
+3. Klik tombol **Start** pada modul **MySQL**.
+4. Pastikan kedua modul berstatus warna hijau (running).
+
+---
+
+### 4. Mengimpor Database
+
+1. Buka browser dan buka phpMyAdmin di alamat:  
+   👉 [http://localhost/phpmyadmin](http://localhost/phpmyadmin)
+2. Klik menu **Baru / New** pada panel sebelah kiri untuk membuat database baru.
+3. Beri nama database: `student_task_manager` (atau `task_manager_db`), lalu klik **Buat / Create**.
+4. Pilih database yang baru dibuat tersebut.
+5. Klik tab **Impor / Import** di bagian atas.
+6. Klik tombol **Choose File / Telusuri**, lalu arahkan ke file:
+   ```text
+   C:\xampp\htdocs\student-task-manager\database\student_task_manager.sql
+   ```
+7. Gulir ke bawah dan klik tombol **Kirim / Import / Go**.
+8. Tunggu hingga muncul pesan hijau bahwa impor berhasil. Tabel `courses` dan `tasks` beserta contoh datanya akan otomatis terbuat.
+
+> **Catatan Koneksi Otomatis:**  
+> File `config/database.php` menggunakan konfigurasi default XAMPP (`host: localhost`, `user: root`, `password: ''`). Konfigurasi ini juga otomatis mendukung nama database `student_task_manager` maupun `task_manager_db`.
+
+---
+
+### 5. Mengakses Aplikasi Web
+Setelah server aktif dan database terimpor, buka browser Anda dan kunjungi tautan berikut:
+
+🌐 **[http://localhost/student-task-manager/](http://localhost/student-task-manager/)**
+
+---
+
+### 6. Panduan Penggunaan Fitur
+
+1. **Dashboard (`index.php`):**
+   - Melihat ringkasan jumlah mata kuliah, total tugas, dan status tugas (*Belum Dikerjakan*, *Sedang Dikerjakan*, *Selesai*).
+   - Melihat daftar 10 tugas dengan deadline terdekat.
+   - **Melihat Detail Tugas:** Klik pada judul tugas atau baris tabel untuk memunculkan modal rincian tugas.
+2. **Kelola Mata Kuliah (`courses/index.php`):**
+   - Tambahkan mata kuliah sebelum membuat tugas.
+   - Mata kuliah yang masih memiliki tugas tidak dapat dihapus (*Proteksi Foreign Key*) untuk menjaga integritas data.
+3. **Kelola Tugas (`tasks/index.php`):**
+   - Klik **Tambah Tugas** dan pilih mata kuliah terkait dari dropdown.
+   - Gunakan fitur **Cari Judul Tugas** untuk pencarian cepat.
+   - Gunakan filter **Mata Kuliah** dan **Status** untuk menyaring daftar tugas.
+   - Klik tombol ikon mata (<i class="bi bi-eye"></i>) atau klik baris tugas untuk membuka **Modal Detail Tugas**.
+   - Klik ikon pensil untuk mengubah data, atau ikon tempat sampah untuk menghapus tugas.
+
+---
+
+## ❓ Troubleshooting / Pemecahan Masalah
+
+| Masalah | Penyebab Umum | Solusi |
+|---|---|---|
+| *Error: Terjadi kesalahan koneksi database* | MySQL belum aktif atau database belum dibuat | Buka XAMPP Control Panel, pastikan MySQL dalam keadaan **Start**, dan pastikan file SQL sudah diimpor di phpMyAdmin. |
+| *Tampilan CSS / JS tidak muncul (polos)* | Nama folder proyek tidak sesuai | Pastikan folder berada tepat di `C:\xampp\htdocs\student-task-manager\`. |
+| *Port Apache Bentrok (Port 80/443 in use)* | Aplikasi lain (seperti VMware, Skype, IIS) menggunakan port 80 | Ubah port Apache di `httpd.conf` atau hentikan aplikasi yang memakai port tersebut. |
+| *Mata kuliah tidak bisa dihapus* | Terdapat tugas yang masih terhubung ke mata kuliah tersebut | Hapus atau ubah mata kuliah pada tugas terkait terlebih dahulu di menu Tugas. |
 
 ---
 
@@ -172,12 +246,13 @@ http://localhost/student-task-manager/
 | TC-10 | Tugas | Edit data tugas | Data tugas berhasil diperbarui | Berhasil |
 | TC-11 | Tugas | Ubah status pengerjaan | Status tugas terupdate (Belum / Sedang / Selesai) | Berhasil |
 | TC-12 | Tugas | Hapus tugas | Data tugas berhasil dihapus | Berhasil |
-| TC-13 | Pencarian | Cari kata kunci judul tugas | Hanya tugas dengan judul sesuai yang ditampilkan | Berhasil |
-| TC-14 | Filter | Filter berdasarkan mata kuliah | Hanya tugas dari mata kuliah terpilih yang muncul | Berhasil |
-| TC-15 | Filter | Filter berdasarkan status | Hanya tugas dengan status terpilih yang muncul | Berhasil |
-| TC-16 | Dashboard | Buka halaman dashboard | Angka counter & daftar deadline terdekat dihitung real-time dari database | Berhasil |
-| TC-17 | Relasi | Tampilkan tabel tugas | Nama mata kuliah tampil via SQL `INNER JOIN` | Berhasil |
-| TC-18 | Keamanan | Kirim POST tanpa token CSRF valid | Permintaan ditolak demi keamanan | Berhasil |
+| TC-13 | Detail Tugas | Klik baris tugas / tombol mata | Memunculkan modal rincian tugas (View Only) | Berhasil |
+| TC-14 | Pencarian | Cari kata kunci judul tugas | Hanya tugas dengan judul sesuai yang ditampilkan | Berhasil |
+| TC-15 | Filter | Filter berdasarkan mata kuliah | Hanya tugas dari mata kuliah terpilih yang muncul | Berhasil |
+| TC-16 | Filter | Filter berdasarkan status | Hanya tugas dengan status terpilih yang muncul | Berhasil |
+| TC-17 | Dashboard | Buka halaman dashboard | Angka counter & daftar deadline terdekat dihitung real-time dari database | Berhasil |
+| TC-18 | Relasi | Tampilkan tabel tugas | Nama mata kuliah tampil via SQL `INNER JOIN` | Berhasil |
+| TC-19 | Keamanan | Kirim POST tanpa token CSRF valid | Permintaan ditolak demi keamanan | Berhasil |
 
 ---
 
